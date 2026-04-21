@@ -1,7 +1,6 @@
 flask==3.0.0
 flask-cors==4.0.0
-anthropic==0.18.1
-supabase==1.2.0
-httpx==0.24.1
+openai
+supabase
 werkzeug==3.0.1
 gunicorn==21.2.0

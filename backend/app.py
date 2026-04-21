@@ -159,8 +159,13 @@ Réponds UNIQUEMENT en JSON valide sans markdown ni backticks :
   ]
 }}"""
 
+<<<<<<< HEAD
     response = openai_client.chat.completions.create(
         model="gpt-4o-mini",
+=======
+    response = anthropic_client.messages.create(
+        model="claude-3-opus-20240229",
+>>>>>>> 6fd7bd3bc6fcf9d8c836eba8050313cd369df077
         max_tokens=2000,
         messages=[{"role": "user", "content": prompt}]
     )
