@@ -3,7 +3,7 @@ import json
 import uuid
 import tempfile
 import subprocess
-import anthropic
+from openai import OpenAI
 from flask import Flask, request, jsonify, send_file, render_template
 from flask_cors import CORS
 from supabase import create_client, Client
@@ -15,13 +15,13 @@ CORS(app)
 # Config depuis variables d'environnement
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
-ANTHROPIC_KEY = os.environ.get("ANTHROPIC_API_KEY")
+
 BUCKET_CLIPS = "clips"
 BUCKET_SOUNDS = "sounds"
 BUCKET_OUTPUT = "output"
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-anthropic_client = anthropic.Anthropic(api_key=ANTHROPIC_KEY)
+openai_client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 ALLOWED_VIDEO = {"mp4", "mov", "avi"}
 ALLOWED_AUDIO = {"mp3", "wav", "mp4", "m4a"}
@@ -159,13 +159,13 @@ Réponds UNIQUEMENT en JSON valide sans markdown ni backticks :
   ]
 }}"""
 
-    response = anthropic_client.messages.create(
-        model="claude-3-haiku-20240307",
+    response = openai_client.chat.completions.create(
+        model="gpt-4o-mini",
         max_tokens=2000,
         messages=[{"role": "user", "content": prompt}]
     )
 
-    result_text = response.content[0].text.strip()
+    result_text = response.choices[0].message.content.strip()
     result_text = result_text.replace("```json", "").replace("```", "").strip()
     matching = json.loads(result_text)
     segments = matching["segments"]
