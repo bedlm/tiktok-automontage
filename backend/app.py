@@ -160,7 +160,7 @@ Réponds UNIQUEMENT en JSON valide sans markdown ni backticks :
 }}"""
 
     response = anthropic_client.messages.create(
-        model="claude-instant-1-2",
+        model="claude-3-opus-20240229",
         max_tokens=2000,
         messages=[{"role": "user", "content": prompt}]
     )
